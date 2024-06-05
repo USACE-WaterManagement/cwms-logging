@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "disable_existing_loggers": false,
+  "formatters": {
+    "standard": {
+      "format": "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+    },
+    "message-only": {
+      "format": "%(message)s"
+    }
+  },
+  "handlers": {
+    "console": {
+        "class": "logging.StreamHandler",
+        "level": "INFO",
+        "formatter": "standard",
+        "stream": "ext://sys.stdout"
+    },
+    "graylog": {
+      "class": "graypy.GELFHTTPHandler",
+      "level": "DEBUG",
+      "formatter": "message-only",
+      "host": "<host>",
+      "port": <port>
+    },
+    "logstash": {
+      "class": "graypy.GELFUDPHandler",
+      "level": "DEBUG",
+      "formatter": "message-only",
+      "host": "<host>",
+      "port": <port>
+    }
+  },
+  "root": {
+    "handlers": ["graylog", "console", "logstash"],
+    "level": "DEBUG"
+  }
+}

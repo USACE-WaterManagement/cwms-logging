@@ -1,0 +1,9 @@
+#!/bin/bash
+# start a class up
+#
+source $CWMS_HOME/bin/sendLogMessage
+#"$CWMS_EXE/bin/startServ $@"
+
+command_output=$CWMS_EXE/bin/startServ "$@"
+exit_status=$?
+log ${exit_status} "${command_output}"
