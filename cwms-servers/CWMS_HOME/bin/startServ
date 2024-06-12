@@ -1,9 +1,14 @@
 #!/bin/bash
-# start a class up
-#
-source $CWMS_HOME/bin/sendLogMessage
-#"$CWMS_EXE/bin/startServ $@"
 
-command_output=$CWMS_EXE/bin/startServ "$@"
-exit_status=$?
-log ${exit_status} "${command_output}"
+source "$CWMS_HOME/bin/sendLogMessage"
+debug "$CWMS_HOME startServ begin with args: $*"
+# Create a temporary file.
+temp_file=$(mktemp)
+# Run startServ in the background, redirecting its output to the temporary file.
+nohup "$CWMS_EXE/bin/startServ" "$*" >> "$temp_file" &
+sleep 5
+command_output=$(cat "$temp_file")
+rm "$temp_file"
+log 0 "${command_output}"
+echo "${command_output}"
+debug "$CWMS_HOME startServ end with args: $*"
