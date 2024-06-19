@@ -11,7 +11,6 @@ fi
 
 LOGGING_HTTP_ENDPOINT=$(getProp cwms.enterprise.logging.http.url notFound cwms.properties $CWMS_HOME/config/properties)
 LOG_HOST=$(hostname)
-LOG_FACILITY='CWMS'
 CONSOLE_PRINT=true
 DEBUG=false
 
@@ -37,7 +36,6 @@ send_log() {
                           \"full_message\": \"$MESSAGE\",
                           \"timestamp\": $(date +%s),
                           \"level\": $LEVEL,
-                          \"facility\": \"$LOG_FACILITY\",
                           \"_pid\": \"$PID\",
                           \"_process_name\": \"$PROCESS_NAME\"
                       }"

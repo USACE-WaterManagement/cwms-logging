@@ -1,34 +1,11 @@
 #!/bin/env python
 '''
-Script:	cwmsClasspath
-
-Usage:	cwmsClasspath [/check] [classpathItem] [classpathItem] ...
-
-Where:	classpathItem = {"classes"|{{"jars"}[:specificItem][,specificItem]...}}
-	specificItem = [-]jarFileName
-
-If no classpathItem is specified, the classpath items default to "classes and jars"
-
-The resulting classpath is written to stdout, so it can be included in shell scripts.
-
-Notes and warnings are written to stderr.
-
-The contents of the jar directory is checked against lists of expected
-jar files.  Any discrepancies are output as warnings.  Jars file that are not listed
-in the expected list are included in the resulting classpath.
-
-The /check option checks every class in the resulting classpath to see if it exists
-in more than one location and outputs warnings about classes defined in multiple locations.
-This is useful for interactively checking the contents of the classes and jars
-directories by executing "cwmsClasspath /check"
-
-Mike Perryman
-USACE HEC
-18 Jun 2004
+Script:	override of the $CWMS_EXE/bin/cwmsClasspath script
+This scripts adds the logstash-gelf logging library to the classpath to
+provide log messages to enterprise logging.
 '''
 
-import sys, os
-from fnmatch import fnmatch
+import sys, os, subprocess
 
 cwmsHome = os.getenv("CWMS_HOME")
 if not cwmsHome :
@@ -39,11 +16,11 @@ if not cwmsHome :
 	sys.stderr.write("#  An empty classpath will be returned.           #\n")
 	sys.stderr.write("#                                                 #\n")
 	sys.stderr.write("###################################################\n")
-	print( "" )
+	print("")
 	sys.exit()
 
 cwmsExe = os.getenv("CWMS_EXE")
-if not cwmsExe :
+if not cwmsExe:
 	sys.stderr.write("\nError from %s\n" % sys.argv[0])
 	sys.stderr.write("###################################################\n")
 	sys.stderr.write("#                                                 #\n")
@@ -51,11 +28,10 @@ if not cwmsExe :
 	sys.stderr.write("#  An empty classpath will be returned.           #\n")
 	sys.stderr.write("#                                                 #\n")
 	sys.stderr.write("###################################################\n")
-	print( "" )
+	print("")
 	sys.exit()
 
-import subprocess
-
+ELOGGING_CLIENT_JAR = "logstash-gelf-1.15.1.jar"
 classpath = subprocess.check_output([os.path.join(cwmsExe, 'bin/cwmsClasspath')])
 if classpath:
-	print(classpath + ":" + cwmsHome + "/bin/lib/logstash-gelf-1.15.1.jar")
+	print(classpath + ":" + cwmsHome + "/bin/lib/" + ELOGGING_CLIENT_JAR)

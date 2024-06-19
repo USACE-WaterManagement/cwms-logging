@@ -41,9 +41,10 @@ if __name__ == "__main__":
     logging.getLogger("logWatcher.py").debug("Started watching: %s" % args.directory)
     observer.start()
 
+    SLEEP_LOOP_SECONDS = 1
     try:
         while True:
-            time.sleep(1)
+            time.sleep(SLEEP_LOOP_SECONDS)
     except KeyboardInterrupt:
         observer.stop()
 
