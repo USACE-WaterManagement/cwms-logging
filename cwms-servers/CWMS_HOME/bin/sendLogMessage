@@ -14,6 +14,7 @@ LOG_HOST=$(hostname)
 CONSOLE_PRINT=true
 DEBUG=false
 
+# Returns the log level based on the passed code. 0 indicates INFO, otherwise WARNING
 get_log_level() {
   local CODE=$1
   if [ $CODE -eq 0 ]; then
@@ -23,6 +24,7 @@ get_log_level() {
   fi
 }
 
+# Sends a log message with the specified level and message to the logging http endpoint
 send_log() {
   local LEVEL=$1
   local MESSAGE=$2
@@ -43,6 +45,9 @@ send_log() {
   curl -X POST -H 'Content-Type: application/json' -s -d "$PAYLOAD" $LOGGING_HTTP_ENDPOINT
 }
 
+# Logs a message with a level depending on the provided code.
+# Code 0 logs as INFO otherwise other codes log as WARNING
+# If debugging is on, message is echo'ed
 log() {
   local CODE=$1
   local MESSAGE=$2
@@ -54,6 +59,7 @@ log() {
   send_log $LEVEL "$MESSAGE"
 }
 
+# Logs a debug message, echo'ed only if debug and console print are in effect
 debug() {
   local MESSAGE=$1
   if [ $DEBUG = true ] && [ $CONSOLE_PRINT = true ]; then
@@ -62,6 +68,7 @@ debug() {
   send_log 7 "$MESSAGE" # DEBUG
 }
 
+# Logs an INFO message, echo'ed only if console print is in effect
 info() {
   local MESSAGE=$1
   if $CONSOLE_PRINT; then
@@ -70,6 +77,7 @@ info() {
   send_log 6 "$MESSAGE" # INFO
 }
 
+# Logs a WARNING message, echo'ed only if console print is in effect
 warning() {
   local MESSAGE=$1
   if $CONSOLE_PRINT; then
