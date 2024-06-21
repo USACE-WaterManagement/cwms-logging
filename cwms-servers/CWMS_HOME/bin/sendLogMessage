@@ -1,0 +1,87 @@
+#!/bin/bash
+
+if [ ! -f $CWMS_EXE/bin/getProp ]
+then
+	echo " "
+	echo "Script \"$CWMS_EXE/bin/getProp\" was not found!"
+	echo "Unable to setup CWMS Enterprise Logging"
+	echo " "
+	exit 1
+fi
+
+LOGGING_HTTP_ENDPOINT=$(getProp cwms.enterprise.logging.http.url notFound cwms.properties $CWMS_HOME/config/properties)
+LOG_HOST=$(hostname)
+CONSOLE_PRINT=true
+DEBUG=false
+
+# Returns the log level based on the passed code. 0 indicates INFO, otherwise WARNING
+get_log_level() {
+  local CODE=$1
+  if [ $CODE -eq 0 ]; then
+    echo "6" # INFO
+  else
+    echo "4" # WARNING
+  fi
+}
+
+# Sends a log message with the specified level and message to the logging http endpoint
+send_log() {
+  local LEVEL=$1
+  local MESSAGE=$2
+  local PID=$$
+  local PROCESS_NAME=$(basename $0)
+
+  local PAYLOAD="{
+                          \"version\": \"1.1\",
+                          \"host\": \"$LOG_HOST\",
+                          \"short_message\": \"$MESSAGE\",
+                          \"full_message\": \"$MESSAGE\",
+                          \"timestamp\": $(date +%s),
+                          \"level\": $LEVEL,
+                          \"_pid\": \"$PID\",
+                          \"_process_name\": \"$PROCESS_NAME\"
+                      }"
+  #echo $PAYLOAD
+  curl -X POST -H 'Content-Type: application/json' -s -d "$PAYLOAD" $LOGGING_HTTP_ENDPOINT
+}
+
+# Logs a message with a level depending on the provided code.
+# Code 0 logs as INFO otherwise other codes log as WARNING
+# If debugging is on, message is echo'ed
+log() {
+  local CODE=$1
+  local MESSAGE=$2
+
+  local LEVEL=$(get_log_level $CODE)
+  if $DEBUG; then
+    echo $MESSAGE
+  fi
+  send_log $LEVEL "$MESSAGE"
+}
+
+# Logs a debug message, echo'ed only if debug and console print are in effect
+debug() {
+  local MESSAGE=$1
+  if [ $DEBUG = true ] && [ $CONSOLE_PRINT = true ]; then
+    echo $MESSAGE
+  fi
+  send_log 7 "$MESSAGE" # DEBUG
+}
+
+# Logs an INFO message, echo'ed only if console print is in effect
+info() {
+  local MESSAGE=$1
+  if $CONSOLE_PRINT; then
+    echo $MESSAGE
+  fi
+  send_log 6 "$MESSAGE" # INFO
+}
+
+# Logs a WARNING message, echo'ed only if console print is in effect
+warning() {
+  local MESSAGE=$1
+  if $CONSOLE_PRINT; then
+    echo $MESSAGE
+  fi
+  send_log 4 "$MESSAGE" # WARNING
+}

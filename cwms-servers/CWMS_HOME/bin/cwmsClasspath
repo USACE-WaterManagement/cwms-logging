@@ -1,0 +1,37 @@
+#!/bin/env python
+'''
+Script:	override of the $CWMS_EXE/bin/cwmsClasspath script
+This scripts adds the logstash-gelf logging library to the classpath to
+provide log messages to enterprise logging.
+'''
+
+import sys, os, subprocess
+
+cwmsHome = os.getenv("CWMS_HOME")
+if not cwmsHome :
+	sys.stderr.write("\nError from %s\n" % sys.argv[0])
+	sys.stderr.write("###################################################\n")
+	sys.stderr.write("#                                                 #\n")
+	sys.stderr.write("#  Environment variable CWMS_HOME is not defined!  #\n")
+	sys.stderr.write("#  An empty classpath will be returned.           #\n")
+	sys.stderr.write("#                                                 #\n")
+	sys.stderr.write("###################################################\n")
+	print("")
+	sys.exit()
+
+cwmsExe = os.getenv("CWMS_EXE")
+if not cwmsExe:
+	sys.stderr.write("\nError from %s\n" % sys.argv[0])
+	sys.stderr.write("###################################################\n")
+	sys.stderr.write("#                                                 #\n")
+	sys.stderr.write("#  Environment variable CWMS_EXE is not defined!  #\n")
+	sys.stderr.write("#  An empty classpath will be returned.           #\n")
+	sys.stderr.write("#                                                 #\n")
+	sys.stderr.write("###################################################\n")
+	print("")
+	sys.exit()
+
+ELOGGING_CLIENT_JAR = "logstash-gelf-1.15.1.jar"
+classpath = subprocess.check_output([os.path.join(cwmsExe, 'bin/cwmsClasspath')])
+if classpath:
+	print(classpath + ":" + cwmsHome + "/bin/lib/" + ELOGGING_CLIENT_JAR)

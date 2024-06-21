@@ -1,0 +1,5 @@
+# Dockerfile
+FROM docker.elastic.co/logstash/logstash:8.13.4
+
+RUN bin/logstash-plugin install logstash-input-gelf
+RUN bin/logstash-plugin install logstash-output-loki
