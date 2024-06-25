@@ -34,4 +34,4 @@ if not cwmsExe:
 ELOGGING_CLIENT_JAR = "logstash-gelf-1.15.1.jar"
 classpath = subprocess.check_output([os.path.join(cwmsExe, 'bin/cwmsClasspath')])
 if classpath:
-	print("{}:/bin/lib/{}".format(classpath, cwmsHome, ELOGGING_CLIENT_JAR))
+	print("{}:{}/bin/lib/{}".format(classpath, cwmsHome, ELOGGING_CLIENT_JAR))
