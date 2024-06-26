@@ -42,7 +42,7 @@ send_log() {
                           \"_process_name\": \"$PROCESS_NAME\"
                       }"
   #echo $PAYLOAD
-  curl -X POST -H 'Content-Type: application/json' -s -k -d "$PAYLOAD" $LOGGING_HTTP_ENDPOINT
+  curl -X POST -H 'Content-Type: application/json' -s -d "$PAYLOAD" $LOGGING_HTTP_ENDPOINT
 }
 
 # Logs a message with a level depending on the provided code.
