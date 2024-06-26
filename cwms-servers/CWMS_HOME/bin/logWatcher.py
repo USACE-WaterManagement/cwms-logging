@@ -1,8 +1,15 @@
+#!/bin/env python
+
 import os
 import time
 import re
 import logging
 import argparse
+import sys
+cwms_home = os.getenv('CWMS_HOME')
+sys.path.append("{}/bin/lib".format(cwms_home))
+sys.path.append("{}/bin".format(cwms_home))
+print("$CWMS_HOME/bin and $CWMS_HOME/bin/lib added to sys.path. New path: {}".format(sys.path))
 from loggingSetup import setup_logging
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler

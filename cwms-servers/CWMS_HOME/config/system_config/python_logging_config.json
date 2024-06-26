@@ -22,17 +22,10 @@
       "formatter": "message-only",
       "host": "<host>",
       "port": <port>
-    },
-    "logstash": {
-      "class": "graypy.GELFUDPHandler",
-      "level": "DEBUG",
-      "formatter": "message-only",
-      "host": "<host>",
-      "port": <port>
     }
   },
   "root": {
-    "handlers": ["graylog", "console", "logstash"],
+    "handlers": ["graylog", "console"],
     "level": "DEBUG"
   }
 }

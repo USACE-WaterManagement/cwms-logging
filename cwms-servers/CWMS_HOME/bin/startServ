@@ -5,7 +5,7 @@ debug "$CWMS_HOME startServ begin with args: $*"
 # Create a temporary file.
 temp_file=$(mktemp)
 # Run startServ in the background, redirecting its output to the temporary file.
-nohup "$CWMS_EXE/bin/startServ" "$*" >> "$temp_file" &
+nohup "$CWMS_EXE/bin/startServ" $* >> "$temp_file" &
 sleep 5
 command_output=$(cat "$temp_file")
 rm "$temp_file"

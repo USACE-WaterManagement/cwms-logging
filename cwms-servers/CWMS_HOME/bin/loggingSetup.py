@@ -1,5 +1,3 @@
-#!/bin/env
-
 #  Copyright (c) 2024
 #  United States Army Corps of Engineers - Hydrologic Engineering Center (USACE/HEC)
 #  All Rights Reserved.  USACE PROPRIETARY/CONFIDENTIAL.
@@ -26,6 +24,8 @@ def setup_logging():
         (logging.getLogger("logging_setup")
          .warning("Could not load python logging config. CWMS_HOME not defined."))
     else:
+        sys.path.append("{}/bin/lib".format(cwms_home))
+        print("$CWMS_HOME/bin/lib added to sys.path. New path: {}".format(sys.path))
         path = cwms_home + '/config/system_config/python_logging_config.json'
         with open(path, 'r') as f:
             config = json.load(f)

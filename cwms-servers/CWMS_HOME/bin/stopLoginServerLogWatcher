@@ -1,0 +1,14 @@
+#!/bin/bash
+# stopAccessLogMonitor.sh
+
+# Read the saved PID
+pid=$(cat "$CWMS_HOME/dated/logs/loginServer/accessLogMonitor.pid")
+
+# Kill the process
+kill $pid
+
+# Remove the PID file
+rm "$CWMS_HOME/dated/logs/loginServer/accessLogMonitor.pid"
+
+# Display a message
+echo "The login server access log monitor (PID: $pid) has been stopped."

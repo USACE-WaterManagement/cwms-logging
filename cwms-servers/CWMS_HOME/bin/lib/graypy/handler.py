@@ -765,7 +765,8 @@ class GELFHTTPHandler(BaseGELFHandler):
         :type record: logging.LogRecord
         """
         pickle = self.makePickle(record)
-        connection = httplib.HTTPConnection(
+        connection = httplib.HTTPSConnection(
             host=self.host, port=self.port, timeout=self.timeout
         )
         connection.request("POST", self.path, pickle, self.headers)
+        connection.getresponse()
