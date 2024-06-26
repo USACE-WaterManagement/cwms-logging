@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Start logWatcher.py as a background process
+nohup python3 "$CWMS_HOME/bin/logWatcher.py" "$CWMS_HOME/dated/logs/loginServer" "access.*" > /dev/null 2>&1 &
+
+# Save the process ID (PID) of the last background job ran in this script
+pid=$!
+
+# Write the PID to a file
+echo $pid > "$CWMS_HOME/dated/logs/loginServer/accessLogMonitor.pid"
+
+# Display the PID
+echo "The login server access log monitor (PID: $pid) has started... "
