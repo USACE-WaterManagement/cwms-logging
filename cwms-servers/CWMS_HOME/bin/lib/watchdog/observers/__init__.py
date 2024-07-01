@@ -17,7 +17,7 @@
 :module: watchdog.observers
 :synopsis: Observer that picks a native implementation if available.
 :author: yesudeep@google.com (Yesudeep Mangalapilly)
-:author: contact@tiger-222.fr (Mickaël Schoentgen)
+:author: contact@tiger-222.fr (Mickal Schoentgen)
 
 Classes
 =======

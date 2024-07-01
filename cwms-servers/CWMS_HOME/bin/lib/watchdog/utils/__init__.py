@@ -18,7 +18,7 @@
 :module: watchdog.utils
 :synopsis: Utility classes and functions.
 :author: yesudeep@google.com (Yesudeep Mangalapilly)
-:author: contact@tiger-222.fr (Mickaël Schoentgen)
+:author: contact@tiger-222.fr (Mickal Schoentgen)
 
 Classes
 -------
@@ -84,7 +84,7 @@ class BaseThread(threading.Thread):
         calls this method.
 
         This method is called right before this thread is started and this
-        object’s run() method is invoked.
+        objects run() method is invoked.
         """
         pass
 

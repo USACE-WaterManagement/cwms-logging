@@ -14,7 +14,6 @@ LOG_HOST=$(hostname)
 CONSOLE_PRINT=true
 DEBUG=false
 
-# Returns the log level based on the passed code. 0 indicates INFO, otherwise WARNING
 get_log_level() {
   local CODE=$1
   if [ $CODE -eq 0 ]; then

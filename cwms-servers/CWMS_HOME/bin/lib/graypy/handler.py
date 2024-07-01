@@ -766,7 +766,9 @@ class GELFHTTPHandler(BaseGELFHandler):
         """
         pickle = self.makePickle(record)
         connection = httplib.HTTPSConnection(
-            host=self.host, port=self.port, timeout=self.timeout
+            host=self.host,
+            port=self.port,
+            timeout=self.timeout
         )
-        connection.request("POST", self.path, pickle, self.headers)
+        connection.request('POST', self.path, pickle, self.headers)
         connection.getresponse()
